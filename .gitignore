@@ -1,0 +1,35 @@
+# Python
+**/__pycache__
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+wheels/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+
+# uv
+.python-version
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# claude
+.claude
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project output
+graph.html
+example/purrject_graph.html

@@ -1,0 +1,5 @@
+[module]
+module = "web"
+intro = "Web frontend application"
+document = "../../doc/web.md"
+requirements = ["api", "auth"]

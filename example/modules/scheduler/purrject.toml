@@ -1,0 +1,5 @@
+[module]
+module = "scheduler"
+intro = "Background task scheduler"
+document = "../../doc/scheduler.md"
+requirements = ["db", "logger"]

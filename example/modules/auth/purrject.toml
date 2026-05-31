@@ -1,0 +1,5 @@
+[module]
+module = "auth"
+intro = "Authentication and authorization"
+document = "../../doc/auth.md"
+requirements = ["db", "utils"]

@@ -1,0 +1,5 @@
+[module]
+module = "gateway"
+intro = "API gateway and load balancer"
+document = "../../doc/gateway.md"
+requirements = ["api", "auth", "cache"]

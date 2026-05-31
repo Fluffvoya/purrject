@@ -1,0 +1,5 @@
+[module]
+module = "cache"
+intro = "Caching and session storage"
+document = "../../doc/cache.md"
+requirements = ["utils"]

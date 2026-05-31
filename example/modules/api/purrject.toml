@@ -1,0 +1,5 @@
+[module]
+module = "api"
+intro = "REST API endpoints"
+document = "../../doc/api.md"
+requirements = ["auth", "db"]

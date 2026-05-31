@@ -1,0 +1,15 @@
+[project]
+project_name = "example"
+
+[modules]
+mod1 = "modules/mod1"
+mod2 = "modules/mod2"
+db = "modules/db"
+utils = "modules/utils"
+auth = "modules/auth"
+api = "modules/api"
+web = "modules/web"
+cache = "modules/cache"
+logger = "modules/logger"
+scheduler = "modules/scheduler"
+gateway = "modules/gateway"

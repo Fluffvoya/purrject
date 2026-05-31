@@ -1,0 +1,5 @@
+[module]
+module = "db"
+intro = "Database access layer"
+document = "../../doc/db.md"
+requirements = []

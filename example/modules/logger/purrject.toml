@@ -1,0 +1,5 @@
+[module]
+module = "logger"
+intro = "Logging and monitoring"
+document = "../../doc/logger.md"
+requirements = ["utils"]

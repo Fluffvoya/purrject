@@ -1,0 +1,5 @@
+[module]
+module = "utils"
+intro = "Common utilities and helpers"
+document = "../../doc/utils.md"
+requirements = []
