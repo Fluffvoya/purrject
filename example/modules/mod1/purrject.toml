@@ -1,5 +1,0 @@
-[module]
-module = "mod1"
-intro = "this is mod1"
-document = "../../doc/mod1.md"
-requirements = []
