@@ -8,12 +8,10 @@ A CLI tool for analyzing project module structures. It reads `purrject.toml` con
 dotnet build src/Purrject/
 ```
 
-The binary will be at `src/Purrject/bin/Debug/net10.0/purrject.dll`.
-
 Run with:
 
 ```bash
-dotnet run --project src/Purrject/ -- [command] [options]
+purrject [command] [options]
 ```
 
 ## Configuration Format
@@ -49,9 +47,9 @@ Initialize a new purrject project.
 purrject init -n myproject [-d directory]
 ```
 
-| Option | Description |
-|--------|-------------|
-| `-n`   | Project name (required) |
+| Option | Description                          |
+| ------ | ------------------------------------ |
+| `-n`   | Project name (required)              |
 | `-d`   | Project directory (default: current) |
 
 ### `purrject add`
@@ -62,13 +60,13 @@ Add a new module to the project.
 purrject add auth -i "Authentication module" --document "doc/auth.md" -r db -r utils [-d directory]
 ```
 
-| Option       | Description |
-|--------------|-------------|
-| `<module>`   | Module name (required) |
-| `-i`         | Module introduction |
-| `--document` | Documentation file path |
+| Option       | Description                         |
+| ------------ | ----------------------------------- |
+| `<module>`   | Module name (required)              |
+| `-i`         | Module introduction                 |
+| `--document` | Documentation file path             |
 | `-r`         | Dependency module name (repeatable) |
-| `-d`         | Project root directory |
+| `-d`         | Project root directory              |
 
 ### `purrject list`
 
@@ -115,7 +113,7 @@ Depended by:
 
 ### `purrject deps`
 
-Show recursive dependencies of a module.
+Show direct dependencies of a module.
 
 ```bash
 purrject deps gateway [-d directory]
@@ -124,17 +122,9 @@ purrject deps gateway [-d directory]
 Output:
 
 ```
-gateway
-  ├── api
-  │   ├── auth
-  │   │   ├── db
-  │   │   └── utils
-  │   └── db
-  ├── auth
-  │   ├── db
-  │   └── utils
-  └── cache
-      └── utils
+api
+auth
+cache
 ```
 
 ### `purrject tree`
@@ -153,24 +143,25 @@ Generate an interactive HTML dependency graph.
 purrject graph [-o output.html] [-d directory]
 ```
 
-| Option | Description |
-|--------|-------------|
+| Option | Description                                                       |
+| ------ | ----------------------------------------------------------------- |
 | `-o`   | Output file path (default: `purrject_graph.html` in project root) |
-| `-d`   | Project root directory |
+| `-d`   | Project root directory                                            |
 
 The generated HTML file features:
+
 - Interactive node dragging and zooming
 - Hover tooltips showing module descriptions
 - Click to highlight a module's dependencies
-- Right-click context menu to open documentation
+- Double-click to open module documentation
 
 ## Global Options
 
-| Option          | Description |
-|-----------------|-------------|
-| `--version`     | Show version information |
-| `-h, --help`    | Show help and usage information |
-| `-d`            | Specify project root directory |
+| Option       | Description                     |
+| ------------ | ------------------------------- |
+| `--version`  | Show version information        |
+| `-h, --help` | Show help and usage information |
+| `-d`         | Specify project root directory  |
 
 ## License
 

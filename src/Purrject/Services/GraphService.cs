@@ -22,9 +22,6 @@ public class GraphService
         sb.AppendLine("    #header span { color: #a8a8a8; font-size: 14px; margin-left: 8px; }");
         sb.AppendLine("    #graph { width: 100%; height: calc(100vh - 57px); }");
         sb.AppendLine("    .tooltip { position: absolute; padding: 8px 12px; background: #16213e; border: 1px solid #0f3460; border-radius: 6px; font-size: 13px; color: #eee; pointer-events: none; z-index: 10; max-width: 300px; }");
-        sb.AppendLine("    .context-menu { position: absolute; background: #16213e; border: 1px solid #0f3460; border-radius: 6px; padding: 4px 0; z-index: 20; min-width: 160px; }");
-        sb.AppendLine("    .context-menu-item { padding: 8px 16px; cursor: pointer; font-size: 13px; color: #eee; }");
-        sb.AppendLine("    .context-menu-item:hover { background: #0f3460; }");
         sb.AppendLine("    #minimap { position: absolute; bottom: 16px; right: 16px; width: 200px; height: 150px; border: 1px solid #0f3460; border-radius: 6px; background: #1a1a2e; overflow: hidden; z-index: 5; }");
         sb.AppendLine("    #minimap-viewport { position: absolute; border: 2px solid #e94560; background: rgba(233,69,96,0.1); pointer-events: none; }");
         sb.AppendLine("  </style>");
@@ -164,9 +161,11 @@ public class GraphService
         sb.AppendLine("    });");
 
         // Click highlight
+        sb.AppendLine("    let selectedNodeId = null;");
         sb.AppendLine("    network.on('click', function(params) {");
         sb.AppendLine("      if (params.nodes.length > 0) {");
         sb.AppendLine("        const nodeId = params.nodes[0];");
+        sb.AppendLine("        selectedNodeId = nodeId;");
         sb.AppendLine("        const connected = network.getConnectedNodes(nodeId, 'to');");
         sb.AppendLine("        const allNodes = nodes.getIds();");
         sb.AppendLine("        allNodes.forEach(id => {");
@@ -186,44 +185,19 @@ public class GraphService
         sb.AppendLine("          }");
         sb.AppendLine("        });");
         sb.AppendLine("      } else {");
+        sb.AppendLine("        selectedNodeId = null;");
         sb.AppendLine("        nodes.getIds().forEach(id => nodes.update({ id, opacity: 1 }));");
         sb.AppendLine("        edges.getIds().forEach(id => edges.update({ id, color: { color: '#555' }, width: 1.5 }));");
         sb.AppendLine("      }");
         sb.AppendLine("    });");
 
-        // Context menu via vis-network onContext
-        sb.AppendLine("    let contextMenu = null;");
-        sb.AppendLine("    function removeContextMenu() { if (contextMenu) { contextMenu.remove(); contextMenu = null; } }");
-        sb.AppendLine("    network.on('onContext', function(params) {");
-        sb.AppendLine("      params.event.preventDefault();");
-        sb.AppendLine("      removeContextMenu();");
-        sb.AppendLine("      const nodeId = this.getNodeAt(params.pointer.DOM);");
-        sb.AppendLine("      if (!nodeId) return;");
-        sb.AppendLine("      const node = nodes.get(nodeId);");
-        sb.AppendLine("      contextMenu = document.createElement('div');");
-        sb.AppendLine("      contextMenu.className = 'context-menu';");
-        sb.AppendLine("      contextMenu.style.left = params.event.pageX + 'px';");
-        sb.AppendLine("      contextMenu.style.top = params.event.pageY + 'px';");
-        sb.AppendLine("      if (node.doc) {");
-        sb.AppendLine("        const copyItem = document.createElement('div');");
-        sb.AppendLine("        copyItem.className = 'context-menu-item';");
-        sb.AppendLine("        copyItem.textContent = 'Copy Doc Path';");
-        sb.AppendLine("        copyItem.onclick = () => { navigator.clipboard.writeText(node.doc).then(() => { copyItem.textContent = 'Copied!'; setTimeout(removeContextMenu, 800); }); };");
-        sb.AppendLine("        contextMenu.appendChild(copyItem);");
-        sb.AppendLine("        const openItem = document.createElement('div');");
-        sb.AppendLine("        openItem.className = 'context-menu-item';");
-        sb.AppendLine("        openItem.textContent = 'Open Documentation';");
-        sb.AppendLine("        openItem.onclick = () => { window.open(node.doc, '_blank'); removeContextMenu(); };");
-        sb.AppendLine("        contextMenu.appendChild(openItem);");
+        // Double-click selected node to open document
+        sb.AppendLine("    network.on('doubleClick', function(params) {");
+        sb.AppendLine("      if (params.nodes.length > 0 && selectedNodeId === params.nodes[0]) {");
+        sb.AppendLine("        const node = nodes.get(params.nodes[0]);");
+        sb.AppendLine("        if (node.doc) { window.open(node.doc, '_blank'); }");
         sb.AppendLine("      }");
-        sb.AppendLine("      const highlightItem = document.createElement('div');");
-        sb.AppendLine("      highlightItem.className = 'context-menu-item';");
-        sb.AppendLine("      highlightItem.textContent = 'Highlight Dependencies';");
-        sb.AppendLine("      highlightItem.onclick = () => { network.selectNodes([nodeId]); removeContextMenu(); };");
-        sb.AppendLine("      contextMenu.appendChild(highlightItem);");
-        sb.AppendLine("      document.body.appendChild(contextMenu);");
         sb.AppendLine("    });");
-        sb.AppendLine("    document.addEventListener('click', removeContextMenu);");
 
         sb.AppendLine("  </script>");
         sb.AppendLine("</body>");
