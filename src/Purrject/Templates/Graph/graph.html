@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Dependency map · Purrject</title>
+  <style>/*__GRAPH_STYLES__*/</style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Purrject home">
+      <svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M7 19V9l7-4 7 4v10l-7 4-7-4Z" stroke="currentColor" stroke-width="2"/><path d="m7 9 7 4 7-4M14 13v10" stroke="currentColor" stroke-width="2"/></svg>
+      purrject<span class="brand-dot">.</span>
+    </a>
+    <div class="breadcrumb"><span>/</span><span id="project-name"></span><span class="local-badge">LOCAL MAP</span></div>
+    <button id="theme-toggle" class="icon-button theme-button" type="button" aria-label="Switch to dark mode" title="Switch theme">
+      <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 13A8.5 8.5 0 0 1 11 3.3 8.5 8.5 0 1 0 20.7 13Z"/></svg>
+      <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+    </button>
+  </header>
+  <main class="workspace">
+    <section class="map" aria-label="Module dependency map">
+      <div class="map-heading">
+        <div class="eyebrow"><span class="status-dot"></span> A LITTLE CLARITY FOR YOUR CODE</div>
+        <h1>Everything, connected<span>.</span></h1>
+        <p>Explore the modules that make your project work.</p>
+        <div class="map-stats"><span><strong id="module-count">0</strong> modules</span><i></i><span><strong id="edge-count">0</strong> dependencies</span></div>
+      </div>
+      <svg id="graph" aria-label="Interactive dependency graph. Tab to a module and press Enter to select it." xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-default" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M1 1 9 5 1 9" fill="none" stroke="var(--edge)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+          <marker id="arrow-outgoing" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M1 1 9 5 1 9" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+          <marker id="arrow-incoming" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M1 1 9 5 1 9" fill="none" stroke="var(--incoming)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <g id="viewport"><g id="edges" fill="none"></g><g id="nodes"></g></g>
+      </svg>
+      <div id="empty-state" class="empty-state" hidden><span>∅</span><h2>A fresh start.</h2><p>Add modules to your project to see their connections here.</p></div>
+      <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+      <div class="map-footer">
+        <div class="legend"><span><i class="legend-node"></i> Size = dependents</span><span><i class="legend-arrow">⟶</i> Depends on</span></div>
+        <div class="view-controls" aria-label="Graph view controls">
+          <button id="zoom-out" class="icon-button" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+          <output id="zoom-level" aria-label="Zoom level">100%</output>
+          <button id="zoom-in" class="icon-button" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+          <span class="control-divider"></span>
+          <button id="fit-view" class="icon-button" type="button" aria-label="Fit graph to view" title="Fit graph to view"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></button>
+        </div>
+      </div>
+      <div class="interaction-hint">Drag to explore <span>·</span> Scroll to zoom <span>·</span> Click a module to follow its connections</div>
+    </section>
+    <aside class="sidebar" aria-label="Module explorer">
+      <div class="sidebar-heading"><span class="eyebrow">THE BIG PICTURE</span><span class="live-label"><i></i> Ready to explore</span></div>
+      <section id="overview" class="overview">
+        <div class="overview-symbol" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><path d="m18 18 28 8-16 22-12-30Z" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="18" r="7"/><circle cx="46" cy="26" r="10"/><circle cx="30" cy="48" r="6"/></svg></div>
+        <h2>Good things connect.</h2><p>Select a module to see what it depends on, and what depends on it.</p>
+        <div class="overview-note"><span>↗</span> Bigger nodes have more modules depending on them.</div>
+      </section>
+      <section id="inspector" class="inspector" aria-label="Selected module" hidden>
+        <div class="selection-heading"><span id="module-kind" class="module-kind">MODULE</span><button id="clear-selection" class="icon-button" type="button" aria-label="Clear selection" title="Clear selection (Escape)">×</button></div>
+        <h2 id="selected-name"></h2><p id="selected-intro"></p>
+        <div class="selection-stats"><div><strong id="outgoing-count">0</strong><span>dependencies</span></div><div><strong id="incoming-count">0</strong><span>dependents</span></div></div>
+        <a id="document-link" class="document-link" target="_blank" rel="noopener noreferrer" hidden>Open documentation <span>↗</span></a>
+        <div class="relationship-heading"><i class="relation-dot outgoing"></i><h3>Depends on</h3><span id="outgoing-label"></span></div>
+        <ul id="outgoing-list" class="relation-list"></ul>
+        <div class="relationship-heading"><i class="relation-dot incoming"></i><h3>Depended on by</h3><span id="incoming-label"></span></div>
+        <ul id="incoming-list" class="relation-list"></ul>
+      </section>
+      <section class="module-browser" aria-label="All modules">
+        <div class="browser-heading"><h2>Modules</h2><span id="list-count" class="count-badge">0</span></div>
+        <label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input id="search" type="search" placeholder="Find a module…" aria-label="Find a module" autocomplete="off" spellcheck="false"><kbd>/</kbd></label>
+        <ul id="module-list" class="module-list"></ul>
+        <p id="no-results" class="no-results" hidden>No matching modules.</p>
+      </section>
+      <footer class="sidebar-footer"><span class="status-dot"></span> A map of your project. A little less mystery.</footer>
+    </aside>
+  </main>
+  <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+  <script id="graph-data" type="application/json">__GRAPH_DATA__</script>
+  <script>/*__GRAPH_SCRIPT__*/</script>
+</body>
+</html>

@@ -150,10 +150,14 @@ purrject graph [-o output.html] [-d directory]
 
 The generated HTML file features:
 
-- Interactive node dragging and zooming
-- Hover tooltips showing module descriptions
-- Click to highlight a module's dependencies
-- Double-click to open module documentation
+- A self-contained, offline HTML page with warm ivory / charcoal themes and terracotta accents
+- Draggable nodes with elastic neighbor following, canvas panning, scroll zoom, and a fit-to-view control
+- Node sizes based on the number of distinct modules depending on them
+- One-way arrows pointing from each module to its dependencies
+- Click to highlight direct dependencies in terracotta and dependents in slate blue, with directional flow accents
+- A searchable module list and details panel with descriptions and documentation links
+- Hover descriptions, keyboard selection (Tab / Enter), and Escape to clear selection
+- Double-click to open module documentation; unconfigured dependencies appear as dashed nodes
 
 ## Global Options
 
